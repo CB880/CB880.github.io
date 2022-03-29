@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+
+<html>
+<head>
+  <title>Building Permits Calgary</title>
+   <h1>Building Permits Calgary</h1>
+   <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+   <link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+   <script src="https://api.mapbox.com/styles/v1/cbaptie/ckzw6nz3p00bm14qtupu5ju1y/wmts?access_token=pk.eyJ1IjoiY2JhcHRpZSIsImEiOiJja3p3NG1naTkxYXNqMzBwazl3dmoxejAyIn0.Pbl19lXTMNW-Qei_7auoJA" ></script>
+
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+   <script src="geoJSON.js"></script>
+   <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.js"> </script>
+   <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+   <script src="C:\Users\bapti\Downloads\Lab1Baptie\project1\node_modules\leaflet.markercluster\dist\leaflet.markercluster.js"> </script>
+  <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
+    <title>map</title>
+</head>
+   <script type="text/javascript" src="stylemap.js" ></script>
+
+</head>
+<body>
+      <div id="map"></div>
+      <style media="screen">
+        #map {height: 500px; }
+      </style>
+<div id="footer">
+  <a href="mapbox.html"> |Toggle: Traffic Incidents | </a>
+      <script>
+
+          var map = L.map('map').setView([51.0447, -114.0719], 11);
+
+           L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=SM0NhkfUA2TbpCF7kL1L',
+                {attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'}).addTo(map)
+                //var marker = L.marker ([51.0447, -114.0719]).addTo(map)
+                //L.geoJSON(geoJSONlayer).addTo(map);
+                var popup=L.popup();
+                var popup=new L.Popup();
+                var markers = L.markerClusterGroup();
+                markers.addLayer(L.markerClusterGroup(map));
+                //... Add more layers ...
+                //https://github.com/Leaflet/Leaflet.markercluster#using-the-plugin
+                map.addLayer(markers);
+                var geoJSONlayer = L.geoJson(geoJSONlayer,);
+                markers.addLayer(geoJSONlayer);
+                map.addLayer(markers);
+                const Geomark = L.geoJson(geoJSONlayer,
+                 { onEachFeature : function(feature, layer) {
+                  var popupContent= ('DateIssued: '+ feature.properties.issueddate + '<br></br>' + 'workclassgroup:'+ feature.properties.workclassgroup+'<br></br>' + 'contractorname:'+ feature.properties.contractorname+'<br></br>'+ 'communityname: '+ feature.properties.communityname+ '<br></br>'+ 'originaladdress:'+ feature.properties.originaladdress)
+                  geoJSONlayer.bindPopup(popupContent).openPopup();
+                },
+              });
+              //markers.addLayer(Geomark);
+              map.addLayer(popup);
+                var popup = L.popup()
+                .setLatLng(latlng)
+                .setContent(popupContent)
+                .openOn(map);
+
+
+      </script>
+      <h2>Building Permit Search</h2>
+      <div class="container">
+        <form>
+        <label> Start Date</label>
+        <input type="date" id="StartDate">
+        <br></br>
+        <label>End Date</label>
+        <input type="date" id="EndDate"
+        <br></br>
+        <button type="submit" id="submit" name="submit">Submit</button>
+      </div>
+      <script>
+      //https://www.codegrepper.com/code-examples/javascript/Uncaught+ReferenceError%3A++is+not+defined+at+HTMLButtonElement.onclick
+        var btn = document.getElementById("submit");
+        btn.addEventListener("click", function() {
+          console.log("here")
+          GetDates();
+
+        }, false);
+        const api = ' https://data.calgary.ca/resource/c2es-76ed.geojson';
+
+//https://stackoverflow.com/questions/31977724/how-to-filter-json-data-by-date-range-in-javascript
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+
+        async function GetDates() {
+          console.log("called")
+          let date1=document.querySelector ('#StartDate').value;
+          let date2=document.querySelector ('#EndDate').value;
+          if (date1==date2) {
+            console.log("here")
+           let url=api+'issueddate='+date1;
+            const response = await fetch(url);
+            //https://gis.stackexchange.com/questions/229723/displaying-properties-of-geojson-in-popup-on-leaflet
+            var markers=L.markerClusterGroup();
+            var popup = L.popup(geoJSONlayer);
+            const Geomark = L.geojson(geoJSONlayer,
+             { onEachFeature : function(feature, layer) {
+              var popupContent= ('DateIssued: '+ feature.properties.issueddate + '<br></br>' + 'workclassgroup:'+ feature.properties.workclassgroup+'<br></br>' + 'contractorname:'+ feature.properties.contractorname+'<br></br>'+ 'communityname: '+ feature.properties.communityname+ '<br></br>'+ 'originaladdress:'+ feature.properties.originaladdress)
+              geoJSONlayer.bindPopup(popupContent).openPopup();
+            },
+          });
+          //markers.addLayer(Geomark);
+          map.addLayer(popup);
+        }
+
+        date1=document.queryselector ('#StartDate').value;
+        date2=document.queryselector('#EndDate').value;
+        if (date1!=date2){
+          let url=api+ '$where=issueddate > ' + '\' '+' and issueddate < '+'\''+date2+'\'';
+          const response = await fetch(url);
+          //https://gis.stackexchange.com/questions/229723/displaying-properties-of-geojson-in-popup-on-leaflet
+          var markers=L.markerClusterGroup();
+          var popup = L.popup(geoJSONLayer)
+          const Geomark = L.geojson(geoJSONlayer { onEachFeature : function (feature, layer) {
+            var popupContent= ('DateIssued: '+ feature.properties.issueddate+ '<br></br>' + 'workclassgroup:'+ feature.properties.workclassgroup+'<br></br>' + 'contractorname:'+ feature.properties.contractorname+'<br></br>'+ 'communityname: '+ feature.properties.communityname+ '<br></br>'+ 'originaladdress:'+ feature.properties.originaladdress)
+            geoJSONlayer.bindPopup(popupContent).openPopup();
+          },
+        });
+            //markers.addLayer(Geomark);
+            map.addLayer(markers);
+        }
+      }
+
+      </script>
+      <script>
+        L.mapbox.accessToken='pk.eyJ1IjoiY2JhcHRpZSIsImEiOiJja3p3NG1naTkxYXNqMzBwazl3dmoxejAyIn0.Pbl19lXTMNW-Qei_7auoJA';
+        const mapbox = L.mapbox
+          .map('map')
+          .setView([51.0447, -114.0719], 11)
+          .addLayer(
+            L.mapbox.styleLayer(
+              'mapbox://styles/cbaptie/ckzw6nz3p00bm14qtupu5ju1y'
+            )
+          );
+      L.mapbox.accessToken = 'pk.eyJ1IjoiY2JhcHRpZSIsImEiOiJja3p3NG1naTkxYXNqMzBwazl3dmoxejAyIn0.Pbl19lXTMNW-Qei_7auoJA';
+
+      var mapboxTiles = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=' + L.mapbox.accessToken, {
+             attribution: '© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+             tileSize: 512,
+             zoomOffset: -1
+      });
+
+      var map = L.map('map')
+        .addLayer(mapboxTiles)
+        .setView([51.0447, -114.0719], 11);
+      </script>
+</body>
+</html>
