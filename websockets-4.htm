@@ -24,7 +24,7 @@ line-height:140%;
     <title>Websockets Using JavaScript MQTT Client</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
- 	<script type = "text/javascript"
+ 	<script type = "text/javascript" 
          src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type = "text/javascript">
 
@@ -51,18 +51,18 @@ line-height:140%;
 		catch(err){
 		document.getElementById("out_messages").innerHTML=err.message;
 		}
-
+	
 		if (row==10){
 			row=1;
 			document.getElementById("out_messages").innerHTML=out_msg;
 			}
 		else
 			row+=1;
-
+			
 		mcount+=1;
 		console.log(mcount+"  "+row);
 		}
-
+		
 	function onConnected(recon,url){
 	console.log(" in onConnected " +reconn);
 	}
@@ -85,7 +85,7 @@ line-height:140%;
 	var user_name=document.forms["connform"]["username"].value;
 	console.log("clean= "+clean_sessions);
 	var password=document.forms["connform"]["password"].value;
-
+	
 	if (clean_sessions=document.forms["connform"]["clean_sessions"].checked)
 		clean_sessions=true
 	else
@@ -107,7 +107,7 @@ line-height:140%;
 	console.log("connecting to "+ host +" "+ port +"clean session="+clean_sessions);
 	console.log("user "+user_name);
 	document.getElementById("status_messages").innerHTML='connecting';
-	var x=Math.floor(Math.random() * 10000);
+	var x=Math.floor(Math.random() * 10000); 
 	var cname="orderform-"+x;
 	mqtt = new Paho.MQTT.Client(host,port,cname);
 	//document.write("connecting to "+ host);
@@ -116,21 +116,21 @@ line-height:140%;
 		cleanSession: clean_sessions,
 		onSuccess: onConnect,
 		onFailure: onFailure,
-
+      
      };
 	 if (user_name !="")
 		options.userName=document.forms["connform"]["username"].value;
 	if (password !="")
 		options.password=document.forms["connform"]["password"].value;
-
+	
         mqtt.onConnectionLost = onConnectionLost;
         mqtt.onMessageArrived = onMessageArrived;
 		mqtt.onConnected = onConnected;
 
 	mqtt.connect(options);
 	return false;
-
-
+  
+ 
 	}
 	function sub_topics(){
 		document.getElementById("status_messages").innerHTML ="";
@@ -185,13 +185,13 @@ line-height:140%;
 		return false;
 	}
 
-
+	
     </script>
 
   </head>
   <body>
     <h1>Websockets MQTT Monitor</h1>
-
+	
 	    <script type = "text/javascript">
 //ll
 
@@ -222,7 +222,7 @@ Password: <input type="text" name="password" value=""><br><br>
 Subscribe Topic:   <input type="text" name="Stopic"><br>
 Subscribe QOS:   <input type="text" name="sqos" value="0"><br>
 <input type="submit" value="Subscribe">
-</form>
+</form> 
 </td>
 <td id="publish" width="300">
 <form name="smessage" action="" onsubmit="return send_message()">
@@ -244,7 +244,7 @@ Received Messages:
 <div id="out_messages">
 </div>
 	<script>
-	var connected_flag=0
+	var connected_flag=0	
 	var mqtt;
     var reconnectTimeout = 2000;
 	var host="192.168.1.157";
