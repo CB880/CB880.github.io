@@ -69,7 +69,6 @@ line-height:140%;
 	console.log(" in onConnected " +reconn);
 	}
 	function onConnect() {
-	  // Once a connection has been made, make a subscription and send a message.
 	document.getElementById("status_messages").innerHTML ="Connected to "+host +"on port "+port;
 	connected_flag=1;
 	document.getElementById("status").innerHTML = "Connected";
@@ -112,7 +111,6 @@ line-height:140%;
 	var x=Math.floor(Math.random() * 10000);
 	var cname="orderform-"+x;
 	mqtt = new Paho.MQTT.Client(host,port,cname);
-	//document.write("connecting to "+ host);
 	var options = {
         timeout: 3,
 		cleanSession: clean_sessions,
@@ -171,7 +169,6 @@ line-height:140%;
 		document.getElementById("status_messages").innerHTML="Sending message  "+msg;
 
 		var topic = document.forms["smessage"]["Ptopic"].value;
-		//var retain_message = document.forms["smessage"]["retain"].value;
 		if (document.forms["smessage"]["retain"].checked)
 			retain_flag=true;
 		else
@@ -204,8 +201,7 @@ line-height:140%;
   <body>
     <h1>Looking for Me?</h1>
     <div id='map'></div>
-    <div id="footer">
-      <a href="webmap.html"> |Toggle: Building Permits | </a>
+    
     <script>
       L.mapbox.accessToken='pk.eyJ1IjoiY2JhcHRpZSIsImEiOiJja3p3NG1naTkxYXNqMzBwazl3dmoxejAyIn0.Pbl19lXTMNW-Qei_7auoJA';
       const mapbox = L.mapbox
