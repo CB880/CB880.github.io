@@ -227,7 +227,38 @@ line-height:140%;
     </script>
 
 	    <script type = "text/javascript">
-//ll
+      function geoFindMe() {
+
+        const status = document.querySelector('#status');
+        const mapLink = document.querySelector('#map-link');
+
+        mapLink.href = '';
+        mapLink.textContent = '';
+
+        function success(position) {
+          const latitude  = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          status.textContent = '';
+          mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+          mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+        }
+
+        function error() {
+          status.textContent = 'Unable to retrieve your location';
+        }
+
+        if(!navigator.geolocation) {
+          status.textContent = 'Geolocation is not supported by your browser';
+        } else {
+          status.textContent = 'Locating…';
+          navigator.geolocation.getCurrentPosition(success, error);
+        }
+
+      }
+
+      document.querySelector('#find-me').addEventListener('click', geoFindMe);
+
 
 </script>
 
@@ -254,7 +285,7 @@ Password: <input type="text" name="password" value=""><br><br>
 <td id="subscribe" width="300">
 <form name="subs" action="" onsubmit="return sub_topics()">
 Subscribe Topic:   <input type="text" name="Stopic"><br>
-Subscribe QOS:   <input type="text" name="sqos" value="0"><br>
+
 <input type="submit" value="Subscribe">
 </form>
 </td>
@@ -263,8 +294,7 @@ Subscribe QOS:   <input type="text" name="sqos" value="0"><br>
 
 Message: <input type="text" name="message"><br><br>
 Publish Topic:   <input type="text" name="Ptopic"><br><br>
-Publish QOS:   <input type="text" name="pqos" value="0"><br>
-Retain Message:   <input type="checkbox" name="retain" value="true" ><br>
+
 <input type="submit" value="Submit">
 </form>
 </td>
@@ -273,6 +303,9 @@ Retain Message:   <input type="checkbox" name="retain" value="true" ><br>
 </td>
 </tr>
 </table>
+<button id = "find-me">Show my location</button><br/>
+<p id = "status"></p>
+<a id = "map-link" target="_blank"></a>
 Status Messages:
 <div id="status_messages">
 </div>
