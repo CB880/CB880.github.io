@@ -28,6 +28,8 @@ line-height:140%;
  	<script type = "text/javascript"
          src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script type = "text/javascript">
+  /*https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
+  http://www.steves-internet-guide.com/download/javascript-websockets/*/
 
 
 
@@ -46,7 +48,7 @@ line-height:140%;
 		out_msg="Message received "+r_message.payloadString;
 		out_msg=out_msg+"      Topic "+r_message.destinationName +"<br/>";
 		out_msg="<b>"+out_msg+"</b>";
-		//console.log(out_msg+row);
+
 		try{
 			document.getElementById("out_messages").innerHTML+=out_msg;
 		}
